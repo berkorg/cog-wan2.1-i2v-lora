@@ -1,5 +1,6 @@
 import os
 import time
+import uuid
 import torch
 import tempfile
 import requests
@@ -10,6 +11,9 @@ from diffusers import AutoencoderKLWan, WanImageToVideoPipeline
 from diffusers.utils import export_to_video, load_image
 from transformers import CLIPVisionModel
 from huggingface_hub import hf_hub_download
+
+from utility.s3_settings import get_s3_settings
+from utility.s3_utils import s3utils
 
 MODEL_CACHE = "/workspace/checkpoints"
 MODEL_URL = "https://weights.replicate.delivery/default/wan2.1/model_cache/Wan2.1-I2V-14B-480P-Diffusers.tar"
@@ -211,10 +215,21 @@ class Predictor():
             print(f"Video generation completed in {generation_time:.2f} seconds")
             
             # Save video
-            output_path = tempfile.mkdtemp() + "/output.mp4"
+            output_path = tempfile.mkdtemp() + "/" + str(uuid.uuid4()) + ".mp4"
             print(f"Exporting video to: {output_path} at {fps} fps")
             export_to_video(output, str(output_path), fps=fps)
             print(f"Video saved successfully to: {output_path}")
+            s3utils_instance = s3utils(get_s3_settings())
+            public_video_url = s3utils_instance.file_upload(
+                output_path,
+                f"output_videos/{output_path}",
+            )
+
+            # remove file from local after uploading to S3
+            if os.path.exists(output_path):
+                print(f"The file '{output_path}' has been deleted.")
+                os.remove(output_path)
+            
             
             # Cleanup
             if os.path.exists(lora_path):
