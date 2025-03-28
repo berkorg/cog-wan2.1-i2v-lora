@@ -1,7 +1,3 @@
-# Prediction interface for Cog ⚙️
-# https://cog.run/python
-
-from cog import BasePredictor, Input, Path
 import os
 import time
 import torch
@@ -36,7 +32,7 @@ def calculate_frames(duration, frame_rate):
     # Then add 1 to get 4K+1
     return min(nearest_multiple_of_4 + 1, 81)  # Cap at 81 frames max
 
-class Predictor(BasePredictor):
+class Predictor():
     def setup(self):
         """Load the model into memory to make running multiple predictions efficient"""
         # download weights if they don't exist
@@ -108,22 +104,18 @@ class Predictor(BasePredictor):
 
     def predict(
         self,
-        image: Path = Input(description="Input image"),
-        prompt: str = Input(description="Text prompt describing the desired video effect"),
-        negative_prompt: str = Input(description="Text prompt describing what to avoid in the video", default="low quality, bad quality, blurry, pixelated, watermark"),
-        lora_url: str = Input(description="URL to the LoRA weights (HuggingFace or CivitAI)"),
-        lora_strength: float = Input(description="LoRA effect strength", default=1.0, ge=0.0, le=2.0),
-        duration: float = Input(description="Video duration in seconds", default=3.0, ge=1.0, le=5.0),
-        fps: int = Input(description="Frames per second", default=16, ge=7, le=30),
-        guidance_scale: float = Input(description="Guidance scale for generation", default=5.0, ge=1.0, le=20.0),
-        num_inference_steps: int = Input(description="Number of inference steps", default=28, ge=1, le=100),
-        resize_mode: str = Input(
-            description="Image resizing strategy", 
-            default="auto", 
-            choices=["auto", "fixed_square", "keep_aspect_ratio"]
-        ),
-        seed: int = Input(description="Random seed for generation", default=None)
-    ) -> Path:
+        image: str,
+        prompt: str,
+        negative_prompt: str = "low quality, bad quality, blurry, pixelated, watermark",
+        lora_url: str = None,
+        lora_strength: float = 1.0,
+        duration: float = 3.0,
+        fps: int = 16,
+        guidance_scale: float = 5.0,
+        num_inference_steps: int = 28,
+        resize_mode: str = "auto",
+        seed: int = None
+    ) -> str:
         """Run image-to-video inference with custom LoRA"""
         
         print(f"Starting prediction with: prompt='{prompt}', lora_strength={lora_strength}, duration={duration}s")
@@ -218,7 +210,7 @@ class Predictor(BasePredictor):
             print(f"Video generation completed in {generation_time:.2f} seconds")
             
             # Save video
-            output_path = Path(tempfile.mkdtemp()) / "output.mp4"
+            output_path = tempfile.mkdtemp() + "/output.mp4"
             print(f"Exporting video to: {output_path} at {fps} fps")
             export_to_video(output, str(output_path), fps=fps)
             print(f"Video saved successfully to: {output_path}")
