@@ -20,6 +20,12 @@ COPY ./runpod-setup.sh /setup.sh
 RUN /bin/bash /setup.sh && \
     rm /setup.sh
 
+
+RUN apt-get update && apt-get install -y \
+    ffmpeg \
+    libgl1-mesa-glx \
+    libglib2.0-0
+
 # Python dependencies
 COPY requirements.txt /requirements.txt
 RUN PIP_REQUIRE_HASHES= python3.11 -m pip install --upgrade pip && \
