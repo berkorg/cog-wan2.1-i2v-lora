@@ -1,4 +1,4 @@
-name: Docker Deepfake Generator AI Build
+name: Docker Wan Video Generator AI Build
 
 on:
   workflow_dispatch:
