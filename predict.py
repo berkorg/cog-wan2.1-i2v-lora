@@ -11,13 +11,14 @@ from diffusers.utils import export_to_video, load_image
 from transformers import CLIPVisionModel
 from huggingface_hub import hf_hub_download
 
-MODEL_CACHE = "workspace/checkpoints"
+MODEL_CACHE = "/workspace/checkpoints"
 MODEL_URL = "https://weights.replicate.delivery/default/wan2.1/model_cache/Wan2.1-I2V-14B-480P-Diffusers.tar"
 
 # Frame rates for the Wan model
 MODEL_FRAME_RATE = 16  # WanVideo models use 16 fps
 
 def download_weights(url, dest):
+
     start = time.time()
     print("downloading url: ", url)
     print("downloading to: ", dest)
