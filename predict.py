@@ -59,12 +59,12 @@ class Predictor():
                 MODEL,
                 vae=self.vae,
                 image_encoder=self.image_encoder,
-                torch_dtype=torch.bfloat16
+                torch_dtype=torch.bfloat16,
             )
             
             # Move model to GPU and enable CPU offloading for optimal memory usage
             self.pipe = pipe.to("cuda")
-            # self.pipe.enable_model_cpu_offload()
+            self.pipe.enable_model_cpu_offload()
             
             # Store parameters for VAE scale factors
             self.vae_scale_factor_temporal = self.pipe.vae_scale_factor_temporal
