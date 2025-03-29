@@ -254,13 +254,12 @@ class Predictor():
                 print(f"The file '{output_path}' has been deleted.")
                 os.remove(output_path)
             
-            
             # Cleanup
             if os.path.exists(lora_path):
                 os.remove(lora_path)
                 print(f"Cleaned up temporary LoRA file: {lora_path}")
                 
-            return output_path
+            return public_video_url
             
         except Exception as e:
             # Clean up LoRA file if error occurs

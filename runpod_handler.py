@@ -34,7 +34,7 @@ def handler(job):
         predictor = Predictor()
         predictor.setup()
 
-        predictor.predict(
+        public_video_url = predictor.predict(
             image=image_url,
             prompt=prompt,
             negative_prompt=negative_prompt,
@@ -47,6 +47,7 @@ def handler(job):
             seed=seed,
             resize_mode=resize_mode,
         )
+        return {"public_video_url": public_video_url}
 
     elif job_type == "test_job":
         return {"status": "handler is fine!"}
