@@ -13,3 +13,4 @@ regex
 pillow>=10.0.0
 imageio>=2.31.1
 imageio-ffmpeg>=0.4.8
+hf_transfer==0.1.9
