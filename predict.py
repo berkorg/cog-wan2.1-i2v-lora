@@ -40,6 +40,30 @@ def calculate_frames(duration, frame_rate):
 class Predictor():
     def setup(self):
         """Load the model into memory to make running multiple predictions efficient"""
+        # Print contents of /workspace directory
+        print("Contents of /workspace directory:")
+        try:
+            for item in os.listdir("/workspace"):
+                item_path = os.path.join("/workspace", item)
+                if os.path.isdir(item_path):
+                    print(f"📁 {item}/")
+                else:
+                    print(f"📄 {item}")
+        except Exception as e:
+            print(f"Error listing /workspace directory: {str(e)}")
+
+        # Print contents of root directory
+        print("\nContents of root directory:")
+        try:
+            for item in os.listdir("/"):
+                item_path = os.path.join("/", item)
+                if os.path.isdir(item_path):
+                    print(f"📁 {item}/")
+                else:
+                    print(f"📄 {item}")
+        except Exception as e:
+            print(f"Error listing root directory: {str(e)}")
+
         # download weights if they don't exist
         if not os.path.exists(MODEL_CACHE):
             download_weights(MODEL_URL, MODEL_CACHE)
