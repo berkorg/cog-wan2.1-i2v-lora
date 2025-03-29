@@ -1,3 +1,4 @@
+runpod==1.7.7
 torch==2.4.0
 torchvision
 git+https://github.com/huggingface/diffusers.git@refs/pull/11059/head
