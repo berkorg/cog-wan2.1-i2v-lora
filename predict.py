@@ -15,7 +15,7 @@ from huggingface_hub import hf_hub_download
 from utility.s3_settings import get_s3_settings
 from utility.s3_utils import s3utils
 
-MODEL_CACHE = "/workspace/checkpoints"
+MODEL_CACHE = "/runpod-volume/checkpoints"
 MODEL_URL = "https://weights.replicate.delivery/default/wan2.1/model_cache/Wan2.1-I2V-14B-480P-Diffusers.tar"
 
 # Frame rates for the Wan model
@@ -41,16 +41,16 @@ class Predictor():
     def setup(self):
         """Load the model into memory to make running multiple predictions efficient"""
         # Print contents of /workspace directory
-        print("Contents of /workspace directory:")
+        print("Contents of /runpod-volume directory:")
         try:
-            for item in os.listdir("/workspace"):
-                item_path = os.path.join("/workspace", item)
+            for item in os.listdir("/runpod-volume"):
+                item_path = os.path.join("/runpod-volume", item)
                 if os.path.isdir(item_path):
                     print(f"📁 {item}/")
                 else:
                     print(f"📄 {item}")
         except Exception as e:
-            print(f"Error listing /workspace directory: {str(e)}")
+            print(f"Error listing /runpod-volume directory: {str(e)}")
 
         # Print contents of root directory
         print("\nContents of root directory:")
