@@ -31,9 +31,9 @@ class s3utils:
         try:
             client.upload_file(filepath, self.aws_bucket_name, key)
 
-            url = "https://%s.s3.amazonaws.com/%s/%s" % (
+            url = "https://%s.s3.%s.amazonaws.com/%s" % (
                 self.aws_bucket_name,
-                self.aws_bucket_name,
+                self.aws_bucket_location,
                 key,
             )
 
