@@ -88,6 +88,7 @@ class Predictor():
                 vae=self.vae,
                 image_encoder=self.image_encoder,
                 torch_dtype=torch.bfloat16,
+                safety_checker=None,
             )
             
             # Move model to GPU and enable CPU offloading for optimal memory usage
